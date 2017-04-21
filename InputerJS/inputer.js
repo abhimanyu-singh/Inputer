@@ -1,14 +1,16 @@
-function inputer() {
+function Inputer(defErrorContainer) {
+	this.aa_defErrorContainer = defErrorContainer;
+	this.submitButtonId;		// @TODO: Create Method to Add Submit button and assign the Submit button ID here
 	this.aa_inputList = {};
 	this.aa_submitButtonDependency = {};
 	this.showAlertOnIncorrectParamIfErrorContainerNotFound = false;
 	
-	this.createInput = function(inpId, inpType, defValue, submitButtonId, errorMsgContainerId, isManadatory, style, className, otherOptions) {
-		//	aa_submitButtonDependency[submitButtonId][inpId] = false;
+	this.createInput = function(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+		//	this.aa_submitButtonDependency[submitButtonId][inpId] = false;
 		// Provide Default Values for Last few Params
 		if (typeof(isManadatory)		==='undefined') isManadatory		= true;
 		if (typeof(className)			==='undefined') className			= "";
-		if (typeof(errorMsgContainerId)	==='undefined') errorMsgContainerId	= "";
+		if (typeof(errorMsgContainerId)	==='undefined') errorMsgContainerId	= aa_defErrorContainer;
 		if (typeof(otherOptions)		==='undefined') otherOptions		= "";
 		
 		inpType = inpType.toLowerCase();							// Convert to Lower Case for Easy Comparison
@@ -53,7 +55,7 @@ function inputer() {
 			errContainer: errorMsgContainerId
 		};
 		
-		aa_inputList[inpId] = inpInfo;	// Save the required Info
+		this.aa_inputList[inpId] = inpInfo;	// Save the required Info
 		
 		return inpStr;
 	}
@@ -66,7 +68,7 @@ function inputer() {
 	
 	this.verifyInputValue = function(inpID) {
 		var curVal		= document.getElementById(inpID).value;
-		var inp			= aa_inputList[inpID];
+		var inp			= this.aa_inputList[inpID];
 		var validated	= true;
 		var errorStr	= "Incorrect Value";
 		
@@ -111,7 +113,7 @@ function inputer() {
 			document.getElementById( inpID ).style.backgroundColor = '#F4DEDE';
 			if(inp.errContainer != "")
 				document.getElementById( inp.errContainer ).innerHTML = "<span style='color:red;'>"+errorStr+"</span>";
-			else if (showAlertOnIncorrectParamIfErrorContainerNotFound)
+			else if (this.showAlertOnIncorrectParamIfErrorContainerNotFound)
 				alert (errorStr);
 		}
 		else {
