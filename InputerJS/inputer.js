@@ -6,6 +6,7 @@ function Inputer(inpContainer, defErrorContainer) {
 	this.submitButtonDependency = {};
 	this.showAlertOnIncorrectParamIfErrorContainerNotFound = false;
 	
+	
 	this.selectOption = function(inpID, options, selected){
 		var selectOp = "<select id='" + inpID + "'>\n";
 		for (var i = 0; i < options.length; i++){
@@ -16,6 +17,21 @@ function Inputer(inpContainer, defErrorContainer) {
 		selectOp += "</select>\n";
 		document.getElementById(this.inputContainer).innerHTML += selectOp;
 		return selectOp;
+	}
+	
+	
+	this.createInputWithBR = function(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+		this.createInput(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions);
+		this.addLineBreak();
+	}
+	
+	
+	this.createInputWithLabel = function(display, inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+		document.getElementById(this.inputContainer).innerHTML += "<div class='inputerLabelContainer'>" + display + "</div>";
+//		document.getElementById(this.inputContainer).innerHTML += ""<div class='inputerValueDivContainer'>";
+		this.createInput(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions);
+//		document.getElementById(this.inputContainer).innerHTML += "</div>";
+		this.addLineBreak();
 	}
 	
 	
@@ -55,7 +71,7 @@ function Inputer(inpContainer, defErrorContainer) {
 		inpStr += otherOptions;
 		inpStr += "value='"	+ defValue	+ "' ";
 		inpStr += "placeholder= '"	+ placeholder + "' ";
-		inpStr += "onblur=verifyInputValue('" + inpId + "') ";
+		inpStr += "onblur=this.verifyInputValue('" + inpId + "') ";
 		inpStr += "/>\n";
 		
 		if(inpType == "date")	{
@@ -137,4 +153,9 @@ function Inputer(inpContainer, defErrorContainer) {
 				document.getElementById( inp.errContainer ).innerHTML = '';
 		}
 	}
+	
+	this.addLineBreak = function(){
+		document.getElementById(this.inputContainer).innerHTML += "</br>";
+	}
+	
 }

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <body>
 	<script src="InputerJS/inputer.js"></script>
+	<link rel="stylesheet" type="text/css" href="InputerJS/inputer.css"/>
+	
 	<div id='ErrorBox'></div>
 	<div id='inputContent'></div>
 	
 	<script>
 	var inp = new Inputer('inputContent', 'ErrorBox');
 	
-	inp.createInput("inpId1", "text",	"", "subID");
-	inp.createInput("inpId2", "ip", 	"", "subID");
-	inp.createInput("inpId3", "email",	"", "subID");
-	inp.createInput("inpId4", "number", "", "subID");
-	inp.createInput("inpId5", "password","","subID");
-	inp.createInput("inpId6", "bool", 	"", "subID");
+	inp.createInputWithLabel("Text Input",		"inpId1", "text",		"", "subID");
+	inp.createInputWithLabel("IP Input",		"inpId2", "ip", 		"", "subID");
+	inp.createInputWithLabel("Email Input",		"inpId3", "email",		"", "subID");
+	inp.createInputWithLabel("Number Input",	"inpId4", "number",		"", "subID");
+	inp.createInputWithLabel("Password Input",	"inpId5", "password",	"","subID");
+	inp.createInputWithLabel("Bool Input",		"inpId6", "bool",		"", "subID");
 	
 	</script>
 </body>
