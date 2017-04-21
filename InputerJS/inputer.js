@@ -1,27 +1,41 @@
-function Inputer(defErrorContainer) {
-	this.aa_defErrorContainer = defErrorContainer;
+function Inputer(inpContainer, defErrorContainer) {
+	this.inputContainer = inpContainer;
+	this.defErrorContainer = defErrorContainer;
 	this.submitButtonId;		// @TODO: Create Method to Add Submit button and assign the Submit button ID here
-	this.aa_inputList = {};
-	this.aa_submitButtonDependency = {};
+	this.inputList = {};
+	this.submitButtonDependency = {};
 	this.showAlertOnIncorrectParamIfErrorContainerNotFound = false;
 	
+	this.selectOption = function(inpID, options, selected){
+		var selectOp = "<select id='" + inpID + "'>\n";
+		for (var i = 0; i < options.length; i++){
+			selectOp += "<option value='" + options[i].Value + "'";
+			if(selected == options[i].Value) selectOp += " selected";
+			selectOp += ">" + options[i].Display + "</option>\n";
+		}
+		selectOp += "</select>\n";
+		document.getElementById(this.inputContainer).innerHTML += selectOp;
+		return selectOp;
+	}
+	
+	
 	this.createInput = function(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
-		//	this.aa_submitButtonDependency[submitButtonId][inpId] = false;
+		//	this.submitButtonDependency[submitButtonId][inpId] = false;
 		// Provide Default Values for Last few Params
 		if (typeof(isManadatory)		==='undefined') isManadatory		= true;
 		if (typeof(className)			==='undefined') className			= "";
-		if (typeof(errorMsgContainerId)	==='undefined') errorMsgContainerId	= aa_defErrorContainer;
+		if (typeof(errorMsgContainerId)	==='undefined') errorMsgContainerId	= this.defErrorContainer;
 		if (typeof(otherOptions)		==='undefined') otherOptions		= "";
 		
 		inpType = inpType.toLowerCase();							// Convert to Lower Case for Easy Comparison
 		var inlineType = "text";
 		
 		var placeholder= "";
-		if(inpType == "select")	return aa_selectOption(inpId, otherOptions, defValue);	// Select Works Differently
+		if(inpType == "select")	return this.selectOption(inpId, otherOptions, defValue);	// Select Works Differently
 		if(inpType == "bool")	{
 			if(defValue == "true"	|| defValue == true	|| defValue == 1) defValue = "1";
 			if(defValue == "false"	|| defValue == false|| defValue == 0) defValue = "0";
-			return aa_selectOption(inpId, [{Display:"Yes", Value:"1"},{Display:"No", Value:"1"}], defValue);	// Select Bool
+			return this.selectOption(inpId, [{Display:"Yes", Value:"1"},{Display:"No", Value:"1"}], defValue);	// Select Bool
 		}
 		
 		if(inpType == "date")	placeholder= "dd-mm-yyyy";
@@ -41,7 +55,7 @@ function Inputer(defErrorContainer) {
 		inpStr += otherOptions;
 		inpStr += "value='"	+ defValue	+ "' ";
 		inpStr += "placeholder= '"	+ placeholder + "' ";
-		inpStr += "onblur=aa_verifyInputValue('" + inpId + "') ";
+		inpStr += "onblur=verifyInputValue('" + inpId + "') ";
 		inpStr += "/>\n";
 		
 		if(inpType == "date")	{
@@ -55,8 +69,9 @@ function Inputer(defErrorContainer) {
 			errContainer: errorMsgContainerId
 		};
 		
-		this.aa_inputList[inpId] = inpInfo;	// Save the required Info
+		this.inputList[inpId] = inpInfo;	// Save the required Info
 		
+		document.getElementById(this.inputContainer).innerHTML += inpStr;
 		return inpStr;
 	}
 	
@@ -68,7 +83,7 @@ function Inputer(defErrorContainer) {
 	
 	this.verifyInputValue = function(inpID) {
 		var curVal		= document.getElementById(inpID).value;
-		var inp			= this.aa_inputList[inpID];
+		var inp			= this.inputList[inpID];
 		var validated	= true;
 		var errorStr	= "Incorrect Value";
 		
@@ -121,15 +136,5 @@ function Inputer(defErrorContainer) {
 			if(inp.errContainer != "")
 				document.getElementById( inp.errContainer ).innerHTML = '';
 		}
-	}
-	this.selectOption = function(inpID, options, selected){
-		var selectOp = "<select id='" + inpID + "'>\n";
-		for (var i = 0; i < options.length; i++){
-			selectOp += "<option value='" + options[i].Value + "'";
-			if(selected == options[i].Value) selectOp += " selected";
-			selectOp += ">" + options[i].Display + "</option>\n";
-		}
-		selectOp += "</select>\n";
-		return selectOp;
 	}
 }
