@@ -2,7 +2,7 @@
 Manage the inputs and their validation with this simplified JS import!
 
 # Output
-![ScreenShot](https://raw.github.com/abhimanyu-singh/Inputer/Sample_Images/SampleScreenShot.png)
+![ScreenShot](https://github.com/abhimanyu-singh/Inputer/blob/master/Sample_Images/SampleScreenShot.png)
 
 # Usage
 	<!DOCTYPE html>
