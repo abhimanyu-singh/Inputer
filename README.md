@@ -7,8 +7,8 @@ Manage the inputs and their validation with this simplified JS import!
 # Usage
 
 ```html
-	<!DOCTYPE html>
-	<body>
+<!DOCTYPE html>
+<body>
 	<script src="InputerJS/inputer.js"></script>
 	<link rel="stylesheet" type="text/css" href="InputerJS/inputer.css"/>
 	
@@ -16,23 +16,23 @@ Manage the inputs and their validation with this simplified JS import!
 	<div id='ErrorBox'></div>
 	
 	<script>
-	var inp = new Inputer('inputContent', 'ErrorBox');
-	
-	inp.createForm();
-	inp.createInputWithLabel("Text Input",	 "inpId1", "text");
-	inp.createInputWithLabel("IP Input",	 "inpId2", "ip");
-	inp.createInputWithLabel("Email Input",	 "inpId3", "email");
-	inp.createInputWithLabel("Number Input", "inpId4", "number");
-	inp.createInputWithLabel("Password Input", "inpId5", "password");
-	inp.createInputWithLabel("Bool Input",	 "inpId6", "bool");
-	inp.createSubmitButton("formValidated");
-	inp.render();
-	
-	function formValidated(){
-	alert("Everything looks fine over here... aaargghh!!");
-	}
+		var inp = new Inputer('inputContent', 'ErrorBox');
+		
+		inp.createForm();
+		inp.createInputWithLabel("Text Input",	 "inpId1", "text");
+		inp.createInputWithLabel("IP Input",	 "inpId2", "ip");
+		inp.createInputWithLabel("Email Input",	 "inpId3", "email");
+		inp.createInputWithLabel("Number Input", "inpId4", "number");
+		inp.createInputWithLabel("Password Input", "inpId5", "password");
+		inp.createInputWithLabel("Bool Input",	 "inpId6", "bool");
+		inp.createSubmitButton("formValidated");
+		inp.render();
+		
+		function formValidated(){
+			alert("Everything looks fine over here... aaargghh!!");
+		}
 	</script>
-	</body>
+</body>
 ```
 
 # Supported Types
