@@ -2,7 +2,7 @@
 Manage the inputs and their validation with this simplified JS import!
 
 # Output
-![Alt text](/Inputer/Sample_Images/SampleScreenShot.png?raw=true "Output View on Firefox!")
+![ScreenShot](https://raw.github.com/abhimanyu-singh/Inputer/Sample_Images/SampleScreenShot.png)
 
 # Usage
 	<!DOCTYPE html>
