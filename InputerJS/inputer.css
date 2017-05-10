@@ -1,5 +1,26 @@
-.inputerValueDivContainer, .inputerLabelContainer {
+body {
+	font-family: "Tahoma","Arial","sans serif";
+	font-size:12px;
+}
+.inputerDivContainer, .inputerLabelContainer {
     display: inline-block;
-    width: 250px;
-    margin: 10px;
+    width: 150px;
+    padding: 5px;
+}
+.inputerDivContainer{
+    width: 350px;
+}
+.oddRowClass{
+	background-color: #f5f5f5;
+}
+.evenRowClass{
+	background-color: #fff;
+}
+.inputBox{
+	background-color: #fff;
+	border: 1px solid #bbb;
+}
+.inputBoxInvalid{
+	background-color: #F4DEDE;
+	border: 1px solid #FAA;
 }
