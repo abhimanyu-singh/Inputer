@@ -8,12 +8,27 @@ function Inputer(inputerID, defErrorContainer) {
 	var submitButtonDependency	= {};
 	var outputString			= "";
 	var isOddRow				= true;
+	var callbackFunction		= "";
+	var formDeclared			= false;
 	var showAlertOnIncorrectParamIfErrorContainerNotFound = false;
+	
+	var highlightColor			= "#BE3A34";
 	
 	if (typeof(_defErrorContainer)	=== 'undefined') _defErrorContainer	= "";
 	
-	this.selectOption = function(inpID, options, selected){
-		var selectOp = "<select id='" + inpID + "'>\n";
+	this.createForm = function(method, target, formID){
+		if (typeof(method)	=== 'undefined') method	= "POST";
+		if (typeof(target)	=== 'undefined') target	= "";
+		if (typeof(formID)	=== 'undefined') formID	= inputContainerID+"_Form";
+		
+		outputString += "<form target='"+target+"' method='"+method+"' id='" + formID + "'>";
+		formDeclared  = true;
+	}
+	
+	this.selectOption = function(inpID, options, selected, className){
+		if (typeof(className)	=== 'undefined') className	= "inputBox";
+		
+		var selectOp = "\n<select id='" + inpID + "' class='" + className + "'>\n";
 		for (var i = 0; i < options.length; i++){
 			selectOp += "<option value='" + options[i].Value + "'";
 			if(selected == options[i].Value) selectOp += " selected";
@@ -24,29 +39,34 @@ function Inputer(inputerID, defErrorContainer) {
 		return selectOp;
 	}
 	
-	this.createInputWithBR = function(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
-		this.createInput(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions);
+	this.createInputWithBR = function(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+		this.createInput(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions);
 		this.addLineBreak();
 	}
 	
-	this.createInputWithLabel = function(displayName, inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+	this.createInputWithLabel = function(displayName, inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+		if (typeof(isManadatory)		=== 'undefined') isManadatory			= true;
+		
 		var bgColorClass = "evenRowClass";
 		if(isOddRow) bgColorClass = "oddRowClass";
 		isOddRow = !isOddRow;
 		
 		outputString += "<div class='inputerDivContainer " + bgColorClass + "'>";
-		outputString += "<div class='inputerLabelContainer " + bgColorClass + "'>" + displayName + "</div>";
+		outputString += "<div class='inputerLabelContainer " + bgColorClass + "'>" + displayName;
+		if(isManadatory) outputString += "<span style='color:"+highlightColor+";'> *<span>";
+		outputString += "</div>";
 		
-		this.createInput(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions);
-		// inputList[inpId].displayName = displayName;
+		this.createInput(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions);
+		if( inputList[inpId] ) inputList[inpId].displayName = displayName;
 		
 		outputString += "</div>";
 		this.addLineBreak();
 	}
 	
-	this.createInput = function(inpId, inpType, defValue, submitButtonId, isManadatory, errorMsgContainerId, style, className, otherOptions) {
-		//	this.submitButtonDependency[submitButtonId][inpId] = false;
+	this.createInput = function(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions) {
+		//	this.submitButtonDependency[inputContainerID][inpId] = false;
 		// Provide Default Values for Last few Params
+		if (typeof(defValue)			=== 'undefined') defValue				= "";
 		if (typeof(isManadatory)		=== 'undefined') isManadatory			= true;
 		if (typeof(className)			=== 'undefined') className				= "inputBox";
 		if (typeof(errorMsgContainerId)	=== 'undefined') errorMsgContainerId	= _defErrorContainer;
@@ -92,7 +112,6 @@ function Inputer(inputerID, defErrorContainer) {
 			displayName	: inpId,
 			type		: inpType,
 			value		: defValue,
-			submitButton: submitButtonId,
 			isMandatory	: isManadatory,
 			errContainer: errorMsgContainerId
 		};
@@ -103,6 +122,40 @@ function Inputer(inputerID, defErrorContainer) {
 		return inpStr;
 	}
 	
+	this.createSubmitButton = function(callbackFunc, displayName, style, className, otherOptions) {
+		if (typeof(callbackFunc) !== 'undefined') callbackFunction	= callbackFunc;
+		if (typeof(displayName)	 === 'undefined') displayName	= "Submit";
+		if (typeof(style)		 === 'undefined') style			= "";
+		if (typeof(className)	 === 'undefined') className		= "inputTypeSubmit";
+		if (typeof(otherOptions) === 'undefined') otherOptions	="";
+		
+		outputString += "\n<input id='" + inputContainerID + "_SubmitButton' "+
+						"style='"+style+"' type='submit' class='"+className+"'"+
+						"value='"+displayName+"' "+
+						"onclick=\"return Inputer.validateFormAndCommit('"+inputContainerID+"')\" "+
+						otherOptions+" />";
+	}
+	this.validateFormAndCommit = function() {
+		// Validate All Fields
+		var inpKey = Object.keys(inputList);
+		var allValidated = true;
+		for(var i = 0; i < inpKey.length; i++){
+			if( ! this.verifyInputValue( inpKey[i] ))
+				allValidated = false;
+		}
+		if( ! allValidated) {
+			if(_defErrorContainer != "") document.getElementById(_defErrorContainer).innerHTML = "<span style='color:"+highlightColor+";'>Please fill <b>All</b> highlighted mandatory fields!<span>";
+			return false;
+		}
+		
+		
+		// Form Validated, Call requested Function, or just return True for Normal Form Submission
+		if(callbackFunction != "") {
+			window[callbackFunction]();
+			if(! formDeclared) return false;
+		}
+		return true;
+	}
 	/************************************************************
 	 * Method: verifyInputValue is called whenever an Inputer
 	 * input looses Focus. It then validates the input value.
@@ -114,7 +167,7 @@ function Inputer(inputerID, defErrorContainer) {
 		var validated	= true;
 		var errorStr	= "Incorrect Value";
 		
-		if (! inp) return;								// Object Not found
+		if (! inp) return false;								// Object Not found
 		
 		if (curVal.search("'") >= 0 || curVal.search('"') >= 0) {
 			validated	= false;
@@ -148,22 +201,24 @@ function Inputer(inputerID, defErrorContainer) {
 		
 		if(inp.isMandatory && curVal == ""){
 			validated	= false;
-			errorStr	= inputList[inpID].displayName +" is Mandatory and Cannot be Left Blank.";
+			errorStr	= "<b>'" + inputList[inpID].displayName +"'</b> is Mandatory and Cannot be Left Blank.";
 		}
 		
 		if(! validated) {
 			document.getElementById( inpID ).className = 'inputBoxInvalid';
 			// document.getElementById( inpID ).style.backgroundColor = '#F4DEDE';
 			if(inp.errContainer != "")
-				document.getElementById( inp.errContainer ).innerHTML = "<span style='color:red;'>"+errorStr+"</span>";
+				document.getElementById( inp.errContainer ).innerHTML = "<span style='color:"+highlightColor+";'>"+errorStr+"</span>";
 			else if (this.showAlertOnIncorrectParamIfErrorContainerNotFound)
 				alert (errorStr);
+			return false;
 		}
 		else {
 			// document.getElementById( inpID ).style.backgroundColor = '';
 			document.getElementById( inpID ).className = 'inputBox';
 			if(inp.errContainer != "")
 				document.getElementById( inp.errContainer ).innerHTML = '';
+			return true;
 		}
 	}
 	this.addLineBreak	= function()		{
@@ -172,7 +227,7 @@ function Inputer(inputerID, defErrorContainer) {
 	this.addToStream	= function(str)		{
 		outputString += str;
 	}
-	this.render			= function()	{
+	this.render			= function()		{
 		document.getElementById(inputContainerID).innerHTML = outputString;
 	}
 }
@@ -181,6 +236,9 @@ Inputer.instanceList	= {};
 Inputer.getInstanceById	= function(inpID)	{
 	return Inputer.instanceList[inpID];
 }
+Inputer.validateFormAndCommit = function(inputerID)	{
+	return Inputer.getInstanceById(inputerID).validateFormAndCommit();
+}
 Inputer.verifyInputValue = function(inputerID, inpID)	{
-	Inputer.getInstanceById(inputerID).verifyInputValue(inpID);
+	return Inputer.getInstanceById(inputerID).verifyInputValue(inpID);
 }

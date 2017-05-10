@@ -1,6 +1,7 @@
 body {
 	font-family: "Tahoma","Arial","sans serif";
 	font-size:12px;
+	color:#666;
 }
 .inputerDivContainer, .inputerLabelContainer {
     display: inline-block;
@@ -10,17 +11,30 @@ body {
 .inputerDivContainer{
     width: 350px;
 }
-.oddRowClass{
-	background-color: #f5f5f5;
-}
-.evenRowClass{
-	background-color: #fff;
-}
+.oddRowClass	{background-color: #f5f5f5;}
+.evenRowClass	{background-color: #fff;}
+.oddRowClass:hover,.evenRowClass:hover	{background-color: #f5fff5;}
 .inputBox{
 	background-color: #fff;
+	border: 1px solid #bbb;
+}
+.inputBox:hover{
+	background-color: #ffd;
 	border: 1px solid #bbb;
 }
 .inputBoxInvalid{
 	background-color: #F4DEDE;
 	border: 1px solid #FAA;
+}
+.inputTypeSubmit{
+	width:120px;
+	height: 30px;
+	background-color: #4EC3E0;
+	border: 1px solid #0067A0;
+	color:#0067A0;
+}
+.inputTypeSubmit:hover {
+	background-color: #97D700;
+	border: 1px solid #59621D;
+	color:#59621D;
 }
