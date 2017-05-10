@@ -143,8 +143,10 @@ function Inputer(inputerID, defErrorContainer) {
 			if( ! this.verifyInputValue( inpKey[i] ))
 				allValidated = false;
 		}
-		if( ! allValidated) {
-			if(_defErrorContainer != "") document.getElementById(_defErrorContainer).innerHTML = "<span style='color:"+highlightColor+";'>Please fill <b>All</b> highlighted mandatory fields!<span>";
+		if( ! allValidated) {	// Validation Failed
+			if(_defErrorContainer != "")
+				document.getElementById(_defErrorContainer).innerHTML = "<span style='color:"+highlightColor+";'>Please fill <b>All</b> highlighted mandatory fields!<span>";
+			else alert("Please fill All highlighted mandatory fields!");
 			return false;
 		}
 		

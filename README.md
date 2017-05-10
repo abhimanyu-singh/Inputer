@@ -1,22 +1,34 @@
 # Inputer
 Manage the inputs and their validation with this simplified JS import!
 
+# Output
+![Alt text](/Inputer/Sample_Images/SampleScreenShot.png?raw=true "Output View on Firefox!")
+
 # Usage
+	<!DOCTYPE html>
 	<body>
-	<div id='ErrorBox'></div>
-	<div id='inputContent'></div>
-	
 	<script src="InputerJS/inputer.js"></script>
+	<link rel="stylesheet" type="text/css" href="InputerJS/inputer.css"/>
+	
+	<div id='inputContent'></div>
+	<div id='ErrorBox'></div>
+	
 	<script>
-	var inp = new Inputer('ErrorBox', 'inputContent');
+	var inp = new Inputer('inputContent', 'ErrorBox');
 	
-	inp.createInput("inpId1", "text",	"", "subID");
-	inp.createInput("inpId2", "ip", 	"", "subID");
-	inp.createInput("inpId3", "email",	"", "subID");
-	inp.createInput("inpId4", "number", "", "subID");
-	inp.createInput("inpId5", "password","","subID");
-	inp.createInput("inpId6", "bool", 	"", "subID");
+	inp.createForm();
+	inp.createInputWithLabel("Text Input",		"inpId1", "text");
+	inp.createInputWithLabel("IP Input",		"inpId2", "ip");
+	inp.createInputWithLabel("Email Input",		"inpId3", "email");
+	inp.createInputWithLabel("Number Input",	"inpId4", "number");
+	inp.createInputWithLabel("Password Input",	"inpId5", "password");
+	inp.createInputWithLabel("Bool Input",		"inpId6", "bool");
+	inp.createSubmitButton("formValidated");
+	inp.render();
 	
+	function formValidated(){
+	alert("Everything looks fine over here... aaargghh!!");
+	}
 	</script>
 	</body>
 
