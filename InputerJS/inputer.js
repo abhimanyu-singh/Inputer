@@ -25,6 +25,49 @@ function Inputer(inputerID, defErrorContainer) {
 		formDeclared  = true;
 	}
 	
+	this.isArray = function(arr) { return arr instanceof Array; }
+	
+	this.loadFormJSON = function(jsonObj){
+		var inputItemsFoundStatus = 0;
+		if(jsonObj.hasOwnProperty("inputs")){
+			inputItemsFoundStatus = 1;
+			if(this.isArray(jsonObj.inputs)){
+				inputItemsFoundStatus = 2;
+				if(jsonObj.inputs.length > 0)
+					inputItemsFoundStatus = 3;
+			}
+		}
+		if(inputItemsFoundStatus != 3){
+			if(inputItemsFoundStatus == 0) alert("Input Array not found! JSONERR:0");
+			if(inputItemsFoundStatus == 1) alert("Input List is not an Array! JSONERR:1");
+			if(inputItemsFoundStatus == 2) alert("Input Array is Empty! JSONERR:2");
+			return false;
+		}
+		
+		var objKeys = Object.keys(jsonObj);
+		for(var i = 0; i < objKeys.length; i++){
+			if(objKeys[i] == "form"){
+				
+			}
+			if(objKeys[i] == "inputs"){
+				for(var j = 0; j < jsonObj.inputs.length; j++){
+					if( ! jsonObj.inputs[j]) continue;
+					var inpDispName = jsonObj.inputs[j].dispName;
+					var inpID		= jsonObj.inputs[j].id;
+					var inpType		= jsonObj.inputs[j].type;
+					if(typeof(inpDispName)	=== "undefined") inpDispName = inpID;
+					if(typeof(inpID)		=== "undefined" ||
+					   typeof(inpType)		=== "undefined") {
+						alert("Input ID or Type Missing for item " + j + "! JSONERR:3");
+						return false;
+					}
+					else this.createInputWithLabel (inpDispName, inpID, inpType);
+				}
+			}
+			if(objKeys[i] == "SubmitButton")
+				this.createSubmitButton (jsonObj.SubmitButton);
+		}
+	}
 	this.selectOption = function(inpID, options, selected, className){
 		if (typeof(className)	=== 'undefined') className	= "inputBox";
 		
@@ -38,12 +81,10 @@ function Inputer(inputerID, defErrorContainer) {
 		outputString += selectOp;
 		return selectOp;
 	}
-	
 	this.createInputWithBR = function(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions) {
 		this.createInput(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions);
 		this.addLineBreak();
 	}
-	
 	this.createInputWithLabel = function(displayName, inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions) {
 		if (typeof(isManadatory)		=== 'undefined') isManadatory			= true;
 		
@@ -62,7 +103,6 @@ function Inputer(inputerID, defErrorContainer) {
 		outputString += "</div>";
 		this.addLineBreak();
 	}
-	
 	this.createInput = function(inpId, inpType, defValue, isManadatory, errorMsgContainerId, style, className, otherOptions) {
 		//	this.submitButtonDependency[inputContainerID][inpId] = false;
 		// Provide Default Values for Last few Params
@@ -121,7 +161,6 @@ function Inputer(inputerID, defErrorContainer) {
 		outputString += inpStr;
 		return inpStr;
 	}
-	
 	this.createSubmitButton = function(callbackFunc, displayName, style, className, otherOptions) {
 		if (typeof(callbackFunc) !== 'undefined') callbackFunction	= callbackFunc;
 		if (typeof(displayName)	 === 'undefined') displayName	= "Submit";

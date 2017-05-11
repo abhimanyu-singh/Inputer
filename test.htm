@@ -9,14 +9,16 @@
 	<script>
 	var inp = new Inputer('inputContent', 'ErrorBox');
 	
-	//inp.createForm();
-	inp.createInputWithLabel("Text Input",		"inpId1", "text");
-	inp.createInputWithLabel("IP Input",		"inpId2", "ip");
-	inp.createInputWithLabel("Email Input",		"inpId3", "email");
-	inp.createInputWithLabel("Number Input",	"inpId4", "number");
-	inp.createInputWithLabel("Password Input",	"inpId5", "password");
-	inp.createInputWithLabel("Bool Input",		"inpId6", "bool");
-	inp.createSubmitButton("formValidated");
+	inp.createForm();
+	
+	inp.createInputWithLabel("Text Input",		"TextInput",	 "text");
+	inp.createInputWithLabel("IP Input",		"IPInput",		 "ip");
+	inp.createInputWithLabel("Email Input",		"EmailInput",	 "email");
+	inp.createInputWithLabel("Number Input",	"NumberInput",	 "number");
+	inp.createInputWithLabel("Password Input",	"PasswordInput", "password");
+	inp.createInputWithLabel("Bool Input",		"BoolInput",	 "bool");
+	inp.createSubmitButton	("formValidated");
+	
 	inp.render();
 	
 	function formValidated(){

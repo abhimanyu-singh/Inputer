@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<body>
+	<script src="InputerJS/inputer.js"></script>
+	<link rel="stylesheet" type="text/css" href="InputerJS/inputer.css"/>
+	
+	<div id='inputContent'></div>
+	<div id='ErrorBox'></div>
+	
+	<script>
+	var inp = new Inputer('inputContent', 'ErrorBox');
+	
+	inp.loadFormJSON({
+		inputs:[,
+			{dispName:"Text Input",		id:"TextInput",		type:"text"},
+			{dispName:"IP Input",		id:"IPInput",		type:"ip"},
+			{dispName:"Email Input",	id:"EmailInput",	type:"email"},
+			{dispName:"Number Input",	id:"NumberInput",	type:"number"},
+			{dispName:"Password Input",	id:"PasswordInput",	type:"password"},
+			{dispName:"Bool Input",		id:"BoolInput",		type:"bool"}
+		],
+		SubmitButton:"formValidated"
+	});
+	
+	inp.render();
+	
+	function formValidated(){
+		alert("Everything looks fine over here!");
+	}
+	</script>
+</body>
