@@ -47,7 +47,13 @@ function Inputer(inputerID, defErrorContainer) {
 		var objKeys = Object.keys(jsonObj);
 		for(var i = 0; i < objKeys.length; i++){
 			if(objKeys[i] == "form"){
-				
+				var method = jsonObj.form.method;
+				var target = jsonObj.form.target;
+				var formID = jsonObj.form.formID;
+				if(typeof(method)	=== "undefined") method = "";
+				if(typeof(target)	=== "undefined") target = "";
+				if(typeof(formID)	=== "undefined") formID = "";
+				this.createForm(method, target, formID);
 			}
 			if(objKeys[i] == "inputs"){
 				for(var j = 0; j < jsonObj.inputs.length; j++){
