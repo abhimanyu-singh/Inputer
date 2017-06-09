@@ -1,5 +1,10 @@
 # Inputer
-Manage the inputs and their validation with this simplified JS import!
+What does Inputer do?
+- Simplifies Form creation
+- Supports multiple data types
+- Allows Input field validation
+- Comes with an optional default flat layout
+- Very easy to add New fields and change their Data type
 
 # Output
 ![ScreenShot](https://github.com/abhimanyu-singh/Inputer/blob/master/Sample_Images/SampleScreenShot.png)
@@ -31,7 +36,7 @@ Manage the inputs and their validation with this simplified JS import!
 	inp.render();
 	
 	function formValidated(){
-		alert("Everything looks fine over here... aaargghh!!");
+		alert("Everything looks fine over here!");
 	}
 	</script>
 </body>
